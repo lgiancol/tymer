@@ -4,7 +4,7 @@ import { ITimeEntry } from "./ITimeEntry";
 
 export class TimeEntry extends BaseEntity implements ITimeEntry {
     constructor(
-        public project: string,
+        public project: string | null,
         public duration: number,
         public notes: string,
         public date: Date
