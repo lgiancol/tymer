@@ -1,0 +1,22 @@
+:host {
+    a {
+        text-decoration: none;
+    }
+
+    .mat-drawer-container {
+        height: 100vh;
+
+        .sidenav {
+            max-width: 250px;
+            width: 100%;
+
+            .active-link {
+                background-color: rgba(242, 255, 0, 0.364);
+            }
+        }
+
+        .sidenav-content {
+            padding: 20px;
+        }
+    }
+}

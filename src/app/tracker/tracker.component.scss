@@ -1,0 +1,16 @@
+:host {
+    table {
+        width: 100%;
+
+        tr.mat-footer-row {
+            font-weight: bold;
+          }
+
+        div.p-1 {
+            padding: 4px;
+        }
+        mat-form-field {
+            width: 100%;
+        }
+    }
+}

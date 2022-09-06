@@ -1,0 +1,82 @@
+<div>
+    <h1>Tracker</h1>
+    <button mat-button (click)="saveTimeEntry()">Save</button>
+    <ng-container>
+        <table mat-table [dataSource]="timeEntriesDataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="project">
+                <th mat-header-cell *matHeaderCellDef>Project</th>
+                <td mat-cell *matCellDef="let timeEntry">{{timeEntry.project}}</td>
+                <td mat-footer-cell *matFooterCellDef>Total</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="project-input">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Project</mat-label>
+                        <mat-select [formControl]="projectControl">
+                            <mat-option *ngFor="let project of projects" [value]="project">
+                                {{project.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </th>
+            </ng-container>
+    
+            <ng-container matColumnDef="duration">
+                <th mat-header-cell *matHeaderCellDef>Duration</th>
+                <td mat-cell *matCellDef="let timeEntry">
+                    {{timeEntry.duration}}
+                    <button mat-icon-button (click)="openNotesDialog(timeEntry.notes)" matTooltip="Add notes">
+                        <mat-icon>note_add</mat-icon>
+                    </button>
+                </td>
+                <td mat-footer-cell *matFooterCellDef>{{getTotalHours()}}h</td>
+            </ng-container>
+    
+            <ng-container matColumnDef="duration-input">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="p-1">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Duration</mat-label>
+                            <input matInput type="number" [formControl]="durationControl">
+                            <button matSuffix mat-icon-button (click)="openNotesDialog()" matTooltip="Add notes">
+                                <mat-icon>note_add</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+                </th>
+            </ng-container>
+    
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let timeEntry">
+                    {{timeEntry.date | date:'MM/dd/yy'}}
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+    
+            <ng-container matColumnDef="date-input">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="p-1">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Date</mat-label>
+                            <input matInput [matDatepicker]="datepicker" [formControl]="dateControl">
+                            <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+                            <mat-datepicker #datepicker>
+                                <!-- <mat-datepicker-actions> -->
+                                  <!-- <button mat-button matDatepickerCancel>Cancel</button>
+                                  <button mat-raised-button color="primary" matDatepickerApply>Apply</button> -->
+                                <!-- </mat-datepicker-actions> -->
+                              </mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </th>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="tableColumnsInput" class="header-2"></tr>
+            <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="tableColumns"></tr>
+        </table>
+    </ng-container>
+</div>

@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "tymer-d2aef": {
+      "hosting": {
+        "tymer": [
+          "tymer-d2aef"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "tymer-d2aef"
+  }
+}

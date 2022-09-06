@@ -1,0 +1,15 @@
+<mat-drawer-container class="example-container" autosize>
+    <mat-drawer class="sidenav" mode="side" opened="true">
+        <mat-action-list>
+            <a routerLink="tracker" routerLinkActive="active-link" mat-list-item>Tracker</a>
+            <a routerLink="projects" routerLinkActive="active-link" mat-list-item>Projects</a>
+          </mat-action-list>
+    </mat-drawer>
+
+    <div class="sidenav-content">
+        <div>
+            <router-outlet #outlet="outlet"></router-outlet>
+        </div>
+    </div>
+
+</mat-drawer-container>
