@@ -38,6 +38,11 @@ export class TrackerComponent implements OnInit, OnDestroy {
     durationControl = new FormControl();
     notesControl = new FormControl('');
     dateControl = new FormControl(new Date());
+    // Only show the dates for the current timeSheet
+    datePickerFilter = (d: Date | null): boolean => {
+        const dateTime = d?.getTime()!;
+        return dateTime >= this.timeSheet?.startDate.getTime() && dateTime <= this.timeSheet?.endDate.getTime();
+    }
 
     constructor(
         private route: ActivatedRoute,

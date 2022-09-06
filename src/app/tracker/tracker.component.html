@@ -60,7 +60,7 @@
                     <div class="p-1">
                         <mat-form-field appearance="standard">
                             <mat-label>Date</mat-label>
-                            <input matInput [matDatepicker]="datepicker" [formControl]="dateControl">
+                            <input matInput [matDatepicker]="datepicker" [matDatepickerFilter]="datePickerFilter" [formControl]="dateControl">
                             <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
                             <mat-datepicker #datepicker>
                                 <!-- <mat-datepicker-actions> -->
