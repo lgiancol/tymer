@@ -210,11 +210,18 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
 
     private _durationToHours(durationInMs: number) {
-        return durationInMs / 1000; // Seconds
+        // Round to nearest minutes
+        let minutes = Math.round(durationInMs / 1000 / 60); // Minutes
+        let hours = Math.round(((minutes / 60) + Number.EPSILON) * 100) / 100; // Round to 2 decimal points
+
+        return hours; // Hours
     }
 
     stopTymer() {
-        const durationInMs = Date.now() - (+this.tymerStart!);
+        let startTyme = Date.now();
+        let stopTyme = startTyme + (1 * 60 * 60 * 1000) + (2.4 * 60 * 1000);
+        // const durationInMs = stopTyme - (+this.tymerStart!);
+        const durationInMs = stopTyme - startTyme;
         const durationInHours = this._durationToHours(durationInMs);
 
         const dialogRef = this.dialog.open(DurationTimeEntryDialogComponent, {
