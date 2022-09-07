@@ -23,6 +23,8 @@ import { NotesDialogComponent } from './notes-dialog/notes-dialog.component';
 export class TrackerComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
 
+    today: Date = new Date();
+
     projects!: IProject[];
     timeSheet!: TimeSheet;
 
@@ -48,11 +50,11 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
 
     private _getTimeSheetRange() {
-        const today = new Date();
-        const day = today.getDay();
-        const diff = today.getDate() - day + (day === 0 ? -6 : 0);
+        const day = this.today.getDay();
+        const diff = this.today.getDate() - day + (day === 0 ? -6 : 0);
 
-        const startDate = new Date(today.setDate(diff));
+        const startDate = new Date(this.today);
+        startDate.setDate(diff);
         startDate.setHours(0, 0, 0, 0);
         const endDate = new Date();
         endDate.setDate(startDate.getDate() + 6);
@@ -106,6 +108,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
                             }
                         }
                     });
+                    this.timeSheet.entries = entries;
                     this.timeEntriesDataSource.data = des;
                 }));
         }));

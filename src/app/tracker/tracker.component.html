@@ -20,8 +20,8 @@
             </ng-container>
 
             <ng-container matColumnDef="sun">
-                <th mat-header-cell *matHeaderCellDef>Sunday</th>
-                <td mat-cell *matCellDef="let displayableTimeEntry">
+                <th mat-header-cell *matHeaderCellDef class="weekend" [ngClass]="{'today': today.getDay() == 0}">Sunday</th>
+                <td mat-cell *matCellDef="let displayableTimeEntry" class="weekend" [ngClass]="{'today': today.getDay() == 0}">
                     <mat-form-field appearance="standard">
                         <mat-label>Duration</mat-label>
                         <input matInput type="number" [(ngModel)]="displayableTimeEntry[0].duration">
@@ -30,12 +30,12 @@
                         </button>
                     </mat-form-field>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>{{getTotalHours(0)}}h</td>
+                <td mat-footer-cell *matFooterCellDef class="weekend" [ngClass]="{'today': today.getDay() == 0}">{{getTotalHours(0)}}h</td>
             </ng-container>
 
             <ng-container matColumnDef="mon">
-                <th mat-header-cell *matHeaderCellDef>Monday</th>
-                <td mat-cell *matCellDef="let displayableTimeEntry">
+                <th mat-header-cell *matHeaderCellDef [ngClass]="{'today': today.getDay() == 1}">Monday</th>
+                <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 1}">
                     <mat-form-field appearance="standard">
                         <mat-label>Duration</mat-label>
                         <input matInput type="number" [(ngModel)]="displayableTimeEntry[1].duration">
@@ -44,12 +44,12 @@
                         </button>
                     </mat-form-field>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>{{getTotalHours(1)}}h</td>
+                <td mat-footer-cell *matFooterCellDef [ngClass]="{'today': today.getDay() == 1}">{{getTotalHours(1)}}h</td>
             </ng-container>
 
             <ng-container matColumnDef="tue">
-                <th mat-header-cell *matHeaderCellDef>Tuesday</th>
-                <td mat-cell *matCellDef="let displayableTimeEntry">
+                <th mat-header-cell *matHeaderCellDef [ngClass]="{'today': today.getDay() == 2}">Tuesday</th>
+                <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 2}">
                     <mat-form-field appearance="standard">
                         <mat-label>Duration</mat-label>
                         <input matInput type="number" [(ngModel)]="displayableTimeEntry[2].duration">
@@ -58,12 +58,12 @@
                         </button>
                     </mat-form-field>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>{{getTotalHours(2)}}h</td>
+                <td mat-footer-cell *matFooterCellDef [ngClass]="{'today': today.getDay() == 2}">{{getTotalHours(2)}}h</td>
             </ng-container>
 
             <ng-container matColumnDef="wed">
-                <th mat-header-cell *matHeaderCellDef>Wednesday</th>
-                <td mat-cell *matCellDef="let displayableTimeEntry">
+                <th mat-header-cell *matHeaderCellDef [ngClass]="{'today': today.getDay() == 3}">Wednesday</th>
+                <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 3}">
                     <mat-form-field appearance="standard">
                         <mat-label>Duration</mat-label>
                         <input matInput type="number" [(ngModel)]="displayableTimeEntry[3].duration">
@@ -72,12 +72,12 @@
                         </button>
                     </mat-form-field>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>{{getTotalHours(3)}}h</td>
+                <td mat-footer-cell *matFooterCellDef [ngClass]="{'today': today.getDay() == 3}">{{getTotalHours(3)}}h</td>
             </ng-container>
 
             <ng-container matColumnDef="thur">
-                <th mat-header-cell *matHeaderCellDef>Thursday</th>
-                <td mat-cell *matCellDef="let displayableTimeEntry">
+                <th mat-header-cell *matHeaderCellDef [ngClass]="{'today': today.getDay() == 4}">Thursday</th>
+                <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 4}">
                     <mat-form-field appearance="standard">
                         <mat-label>Duration</mat-label>
                         <input matInput type="number" [(ngModel)]="displayableTimeEntry[4].duration">
@@ -86,12 +86,12 @@
                         </button>
                     </mat-form-field>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>{{getTotalHours(4)}}h</td>
+                <td mat-footer-cell *matFooterCellDef [ngClass]="{'today': today.getDay() == 4}">{{getTotalHours(4)}}h</td>
             </ng-container>
 
             <ng-container matColumnDef="fri">
-                <th mat-header-cell *matHeaderCellDef>Friday</th>
-                <td mat-cell *matCellDef="let displayableTimeEntry">
+                <th mat-header-cell *matHeaderCellDef [ngClass]="{'today': today.getDay() == 5}">Friday</th>
+                <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 5}">
                     <mat-form-field appearance="standard">
                         <mat-label>Duration</mat-label>
                         <input matInput type="number" [(ngModel)]="displayableTimeEntry[5].duration">
@@ -100,12 +100,12 @@
                         </button>
                     </mat-form-field>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>{{getTotalHours(5)}}h</td>
+                <td mat-footer-cell *matFooterCellDef [ngClass]="{'today': today.getDay() == 5}">{{getTotalHours(5)}}h</td>
             </ng-container>
 
             <ng-container matColumnDef="sat">
-                <th mat-header-cell *matHeaderCellDef>Satuday</th>
-                <td mat-cell *matCellDef="let displayableTimeEntry">
+                <th mat-header-cell *matHeaderCellDef class="weekend" [ngClass]="{'today': today.getDay() == 6}">Satuday</th>
+                <td mat-cell *matCellDef="let displayableTimeEntry" class="weekend" [ngClass]="{'today': today.getDay() == 6}">
                     <mat-form-field appearance="standard">
                         <mat-label>Duration</mat-label>
                         <input matInput type="number" [(ngModel)]="displayableTimeEntry[6].duration">
@@ -114,7 +114,7 @@
                         </button>
                     </mat-form-field>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>{{getTotalHours(6)}}h</td>
+                <td mat-footer-cell *matFooterCellDef class="weekend" [ngClass]="{'today': today.getDay() == 6}">{{getTotalHours(6)}}h</td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
