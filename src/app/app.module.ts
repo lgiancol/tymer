@@ -23,6 +23,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.component';
 import { TrackerComponent } from './tracker/tracker.component';
+import { TymerPipe } from './pipes/tymer.pipe';
+import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { TrackerComponent } from './tracker/tracker.component';
         AppComponent,
         ProjectComponent,
         TrackerComponent,
-        NotesDialogComponent
+        NotesDialogComponent,
+        TymerPipe,
+        DurationTimeEntryDialogComponent
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),

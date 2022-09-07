@@ -1,42 +1,46 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "npm",
-      "script": "start",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    },
-    {
-      "type": "npm",
-      "script": "test",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    }
-  ]
+    // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "watch",
+            "dependsOn": [
+                "start-firebase-emulators",
+                "start-server"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "start-firebase-emulators",
+            "type": "shell",
+            "command": "./start.sh",
+            "isBackground": true,
+            "group": "build",
+            "presentation": {
+                "group": "watchers",
+                "close": true
+            },
+            // "problemMatcher": {
+            //     "background": {
+            //         "activeOnStart": true,
+            //         "endsPattern": "^.*All emulators ready! It is now safe to connect your app.$"
+            //     }
+            // }
+        },
+        {
+            "label": "start-server",
+			"type": "npm",
+			"script": "start",
+			"isBackground": true,
+			"group": "build",
+			"presentation": {
+				"group": "watchers",
+				"close": true
+			}
+		}
+    ]
 }

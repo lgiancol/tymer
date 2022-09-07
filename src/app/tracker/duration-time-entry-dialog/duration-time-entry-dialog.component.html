@@ -1,0 +1,24 @@
+<div>
+    <h1 mat-dialog-title>Duration</h1>
+    <div mat-dialog-content>
+        <mat-form-field appearance="standard">
+            <mat-label>Duration</mat-label>
+            <input matInput [ngModel]="duration" disabled/>
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="standard">
+        <mat-label>Project</mat-label>
+        <mat-select [(ngModel)]="entry.project" placeholder="Project" [disabled]="projects.length == 1">
+            <mat-option *ngFor="let project of projects" [value]="project.name">
+                {{project.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+        <mat-label>Notes</mat-label>
+        <textarea matInput [(ngModel)]="entry.notes" rows="10" cdkFocusInitial></textarea>
+    </mat-form-field>
+      <div mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="entry">Create</button>
+      </div>
+</div>

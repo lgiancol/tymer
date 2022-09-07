@@ -5,14 +5,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { documentId } from 'firebase/firestore';
 import * as _ from 'lodash';
-import { debounceTime, map, Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { DayOfWeek, DisplayableEntry } from '../model/DisplayableEntry';
 import { IProject } from '../model/IProject';
-import { ITimeEntry } from '../model/ITimeEntry';
-import { ITimeSheet } from '../model/ITimeSheet';
 import { Project } from '../model/project';
 import { TimeEntry } from '../model/time-entry';
 import { TimeSheet } from '../model/timesheet';
+import { DurationTimeEntryDialogComponent } from './duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { NotesDialogComponent } from './notes-dialog/notes-dialog.component';
 
 @Component({
@@ -24,6 +23,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
 
     today: Date = new Date();
+    tymerStart: Date | null = null;
 
     projects!: IProject[];
     timeSheet!: TimeSheet;
@@ -75,7 +75,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
             this.projects = projects;
 
             // Get the timesheet for this week
-            this.subs.add(TimeSheet.Collection(this.db, (ref) => ref.where('startDate', '==', timeSheetRange[0]).where('endDate', '==', timeSheetRange[1])).valueChanges({idField: 'id'})
+            this.subs.add(TimeSheet.Collection(this.db, (ref) => ref.where('startDate', '==', timeSheetRange[0]).where('endDate', '==', timeSheetRange[1])).valueChanges({ idField: 'id' })
                 .pipe(map(ts => ts[0]), map(ts => ts ? TimeSheet.fromFirebase(ts) : null))
                 .subscribe(async timeSheet => {
                     // Create the timeSheet for the week
@@ -91,13 +91,12 @@ export class TrackerComponent implements OnInit, OnDestroy {
                     // Filter timeEntries based off project name if there is only 1 project
                     if (this.projects.length == 1) {
                         const project = this.projects[0];
-                        entries = _.filter(entries, te => te.project == project.name);
+                        entries = _.filter(entries, te => te.project == project!.name);
                     }
 
                     // Convert entries to the DisplayableEntries
                     const des = this._parseTimeEntries(entries);
                     // Fill in the remaining empty TimeEntries
-                    des.unshift(new DisplayableEntry());
                     des.forEach(de => {
                         for (const dayOfWeek of [0, 1, 2, 3, 4, 5, 6] as DayOfWeek[]) {
                             if (!de[dayOfWeek]) {
@@ -108,10 +107,27 @@ export class TrackerComponent implements OnInit, OnDestroy {
                             }
                         }
                     });
+
+                    // Add a new row
+                    this._addNewDisplayableEntries(des, entries);
                     this.timeSheet.entries = entries;
                     this.timeEntriesDataSource.data = des;
                 }));
         }));
+    }
+
+    private _addNewDisplayableEntries(displayableEntries: DisplayableEntry[], entries: TimeEntry[]) {
+        const displayableEntry = new DisplayableEntry();
+        displayableEntry.project = null;
+        for (const dayOfWeek of [0, 1, 2, 3, 4, 5, 6] as DayOfWeek[]) {
+            const date = new Date(this.timeSheet.startDate);
+            const entry = new TimeEntry(null, 0, '', new Date(date.setDate(this.timeSheet.startDate.getDate() + dayOfWeek)));
+            entries.push(entry);
+            displayableEntry[dayOfWeek] = entry;
+        }
+        displayableEntries.unshift(displayableEntry);
+
+        return displayableEntry;
     }
 
     private _parseTimeEntries(entries: TimeEntry[]): DisplayableEntry[] {
@@ -172,17 +188,48 @@ export class TrackerComponent implements OnInit, OnDestroy {
         }
     }
 
-    async saveTimeEntry() {
+    async saveTimeSheet() {
         this.timeSheet.entries = this.timeSheet.entries.filter(te => !!te.project);
         await TimeSheet.Collection(this.db).doc(this.timeSheet.id).update(this.timeSheet.toFirebase());
     }
 
-    ngOnDestroy(): void {
-        this.subs.unsubscribe();
-    }
-
     getTotalHours(dayOfWeek: DayOfWeek) {
         return this.timeEntriesDataSource.data.map(t => t[dayOfWeek].duration).reduce((acc, value) => acc + value, 0);
+    }
+
+    startTymer() {
+        this.tymerStart = new Date();
+    }
+
+    private _durationToHours(durationInMs: number) {
+        return durationInMs / 1000; // Seconds
+    }
+
+    stopTymer() {
+        const durationInMs = Date.now() - (+this.tymerStart!);
+        const durationInHours = this._durationToHours(durationInMs);
+
+        const dialogRef = this.dialog.open(DurationTimeEntryDialogComponent, {
+            // width: '50%',
+            data: {
+                duration: durationInHours,
+                projects: this.projects
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((timeEntry: TimeEntry) => {
+            if (timeEntry) {
+                this.timeSheet.entries.push(timeEntry);
+                this.saveTimeSheet();
+            }
+        });
+
+
+        this.tymerStart = null;
+    }
+
+    ngOnDestroy(): void {
+        this.subs.unsubscribe();
     }
 
 }
