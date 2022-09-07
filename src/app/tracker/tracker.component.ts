@@ -133,9 +133,6 @@ export class TrackerComponent implements OnInit, OnDestroy {
     private _parseTimeEntries(entries: TimeEntry[]): DisplayableEntry[] {
         let currentProjectsDEs: { [project: string]: DisplayableEntry[] } = {};
         entries.forEach(te => {
-            // Setup the TimeEntry's variables
-            const dayOfWeek = te.date.getDay();
-
             let projectDEs = currentProjectsDEs[te.project!];
             // If there are no DisplayableEntries for the current project, add one
             if (!projectDEs) {
@@ -148,18 +145,14 @@ export class TrackerComponent implements OnInit, OnDestroy {
             // Go through each of the projectDEs and add the current TE to the one that has the day open
             let didAdd = false;
             for (const projectDE of projectDEs) {
-                let timeEntry = projectDE[dayOfWeek as DayOfWeek];
-                if (!timeEntry) {
-                    projectDE[dayOfWeek as DayOfWeek] = te;
-                    didAdd = true;
+                if(didAdd = this._attempAddTimeEntryToDisplayableEntry(te, projectDE)) {
                     break;
                 }
             }
 
             if (!didAdd) {
                 const displayableEntry = new DisplayableEntry();
-                displayableEntry.project = te.project!;
-                displayableEntry[dayOfWeek as DayOfWeek] = te;
+                this._attempAddTimeEntryToDisplayableEntry(te, displayableEntry);
                 projectDEs.push(displayableEntry);
             }
         });
@@ -167,6 +160,26 @@ export class TrackerComponent implements OnInit, OnDestroy {
 
         // entries = _.orderBy(entries, ['project', 'date'], ['asc', 'desc']);
         return _.flatMap(currentProjectsDEs);
+    }
+
+    private _attempAddTimeEntryToDisplayableEntry(te: TimeEntry, entry: DisplayableEntry) {
+        const dayOfWeek = te.date.getDay();
+        const timeEntryForDay = entry[dayOfWeek as DayOfWeek];
+
+        // If there is not time entry, or there is no notes it is up for the taking
+        if(!timeEntryForDay || !timeEntryForDay.notes || timeEntryForDay.notes.length == 0) {
+            entry.project = te.project!;
+            entry[dayOfWeek as DayOfWeek] = te;
+            return true;
+        }
+
+        return false;
+    }
+
+    updateDisplayableTimeEntry(de: DisplayableEntry, project: string) {
+        for (const dayOfWeek of [0, 1, 2, 3, 4, 5, 6] as DayOfWeek[]) {
+            de[dayOfWeek].project = project;
+        }
     }
 
     openNotesDialog(timeEntry: TimeEntry) {
@@ -182,19 +195,14 @@ export class TrackerComponent implements OnInit, OnDestroy {
         });
     }
 
-    updateDisplayableTimeEntry(de: DisplayableEntry, project: string) {
-        for (const dayOfWeek of [0, 1, 2, 3, 4, 5, 6] as DayOfWeek[]) {
-            de[dayOfWeek].project = project;
-        }
-    }
-
-    async saveTimeSheet() {
-        this.timeSheet.entries = this.timeSheet.entries.filter(te => !!te.project);
+    async saveTimeSheet(displayableEntries: DisplayableEntry[]) {
+        const finalEntries: TimeEntry[] = _.flatMap(displayableEntries.map(de => de.getTimeEntries().filter(te => te.notes)));
+        this.timeSheet.entries = finalEntries;
         await TimeSheet.Collection(this.db).doc(this.timeSheet.id).update(this.timeSheet.toFirebase());
     }
 
     getTotalHours(dayOfWeek: DayOfWeek) {
-        return this.timeEntriesDataSource.data.map(t => t[dayOfWeek].duration).reduce((acc, value) => acc + value, 0);
+        return this.timeEntriesDataSource.data.map(t => t[dayOfWeek] ? t[dayOfWeek].duration : 0).reduce((acc, value) => acc + value, 0);
     }
 
     startTymer() {
@@ -219,8 +227,17 @@ export class TrackerComponent implements OnInit, OnDestroy {
 
         dialogRef.afterClosed().subscribe((timeEntry: TimeEntry) => {
             if (timeEntry) {
-                this.timeSheet.entries.push(timeEntry);
-                this.saveTimeSheet();
+                let didAdd = false;
+                for(const de of this.timeEntriesDataSource.data.filter(de => de.project == timeEntry.project)) {
+                    if(didAdd = this._attempAddTimeEntryToDisplayableEntry(timeEntry, de)) {
+                        break;
+                    }
+                }
+                if(!didAdd) {
+                    const de = this._addNewDisplayableEntries(this.timeEntriesDataSource.data, this.timeSheet.entries);
+                    this._attempAddTimeEntryToDisplayableEntry(timeEntry, de);
+                }
+                this.saveTimeSheet(this.timeEntriesDataSource.data);
             }
         });
 

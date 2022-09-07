@@ -11,4 +11,16 @@ export class DisplayableEntry {
     public 4!: TimeEntry; // Thursday
     public 5!: TimeEntry; // Friday
     public 6!: TimeEntry; // Saturday
+
+    getTimeEntries() {
+        return [
+            this[0],
+            this[1],
+            this[2],
+            this[3],
+            this[4],
+            this[5],
+            this[6]
+        ];
+    }
 }
