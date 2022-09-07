@@ -145,7 +145,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
             // Go through each of the projectDEs and add the current TE to the one that has the day open
             let didAdd = false;
             for (const projectDE of projectDEs) {
-                if(didAdd = this._attempAddTimeEntryToDisplayableEntry(te, projectDE)) {
+                if (didAdd = this._attempAddTimeEntryToDisplayableEntry(te, projectDE)) {
                     break;
                 }
             }
@@ -167,7 +167,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
         const timeEntryForDay = entry[dayOfWeek as DayOfWeek];
 
         // If there is not time entry, or there is no notes it is up for the taking
-        if(!timeEntryForDay || !timeEntryForDay.notes || timeEntryForDay.notes.length == 0) {
+        if (!timeEntryForDay || !timeEntryForDay.notes || timeEntryForDay.notes.length == 0) {
             entry.project = te.project!;
             entry[dayOfWeek as DayOfWeek] = te;
             return true;
@@ -202,11 +202,15 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
 
     getTotalHours(dayOfWeek: DayOfWeek) {
-        return this.timeEntriesDataSource.data.map(t => t[dayOfWeek] ? t[dayOfWeek].duration : 0).reduce((acc, value) => acc + value, 0);
+        let hours = this.timeEntriesDataSource.data.map(t => t[dayOfWeek] ? t[dayOfWeek].duration : 0).reduce((acc, value) => acc + value, 0);
+        return Math.round((hours + Number.EPSILON) * 100) / 100;
     }
 
     startTymer() {
         this.tymerStart = new Date();
+
+        // Open the modal to allow for entering notes during the tracking
+        this._openTymerModalAsync(null); // null means the duration will be calculated when the modal is closed
     }
 
     private _durationToHours(durationInMs: number) {
@@ -221,32 +225,45 @@ export class TrackerComponent implements OnInit, OnDestroy {
         const durationInMs = Date.now() - (+this.tymerStart!);
         const durationInHours = this._durationToHours(durationInMs);
 
+        this.tymerStart = null;
+        this._openTymerModalAsync(durationInHours);
+    }
+
+    private async _openTymerModalAsync(duration: number | null = null) {
         const dialogRef = this.dialog.open(DurationTimeEntryDialogComponent, {
-            // width: '50%',
             data: {
-                duration: durationInHours,
+                duration: duration,
                 projects: this.projects
             }
         });
 
         dialogRef.afterClosed().subscribe((timeEntry: TimeEntry) => {
             if (timeEntry) {
-                let didAdd = false;
-                for(const de of this.timeEntriesDataSource.data.filter(de => de.project == timeEntry.project)) {
-                    if(didAdd = this._attempAddTimeEntryToDisplayableEntry(timeEntry, de)) {
-                        break;
-                    }
+                if (!duration) {
+                    const durationInMs = Date.now() - (+this.tymerStart!);
+                    duration = this._durationToHours(durationInMs);
+                    this.tymerStart = null;
                 }
-                if(!didAdd) {
-                    const de = this._addNewDisplayableEntries(this.timeEntriesDataSource.data, this.timeSheet.entries);
-                    this._attempAddTimeEntryToDisplayableEntry(timeEntry, de);
-                }
-                this.saveTimeSheet(this.timeEntriesDataSource.data);
+
+                timeEntry.duration = duration;
+
+                this._handleTymerModalEntry(timeEntry);
             }
         });
+    }
 
-
-        this.tymerStart = null;
+    private _handleTymerModalEntry(entry: TimeEntry) {
+        let didAdd = false;
+        for (const de of this.timeEntriesDataSource.data.filter(de => de.project == entry.project)) {
+            if (didAdd = this._attempAddTimeEntryToDisplayableEntry(entry, de)) {
+                break;
+            }
+        }
+        if (!didAdd) {
+            const de = this._addNewDisplayableEntries(this.timeEntriesDataSource.data, this.timeSheet.entries);
+            this._attempAddTimeEntryToDisplayableEntry(entry, de);
+        }
+        this.saveTimeSheet(this.timeEntriesDataSource.data);
     }
 
     ngOnDestroy(): void {
