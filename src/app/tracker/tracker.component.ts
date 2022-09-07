@@ -218,10 +218,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
 
     stopTymer() {
-        let startTyme = Date.now();
-        let stopTyme = startTyme + (1 * 60 * 60 * 1000) + (2.4 * 60 * 1000);
-        // const durationInMs = stopTyme - (+this.tymerStart!);
-        const durationInMs = stopTyme - startTyme;
+        const durationInMs = Date.now() - (+this.tymerStart!);
         const durationInHours = this._durationToHours(durationInMs);
 
         const dialogRef = this.dialog.open(DurationTimeEntryDialogComponent, {
