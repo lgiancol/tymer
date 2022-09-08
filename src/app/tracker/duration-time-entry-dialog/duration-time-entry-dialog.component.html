@@ -19,6 +19,8 @@
         <textarea matInput [(ngModel)]="entry.notes" rows="10" cdkFocusInitial></textarea>
     </mat-form-field>
       <div mat-dialog-actions align="end">
-        <button mat-button [mat-dialog-close]="entry">Create</button>
+        <span [matTooltip]="entry.project == null ? 'Make sure to select a project first' : ''">
+            <button mat-button [mat-dialog-close]="entry" [disabled]="!entry.project">Create</button>
+        </span>
       </div>
 </div>

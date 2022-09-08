@@ -245,6 +245,11 @@ export class TrackerComponent implements OnInit, OnDestroy {
                     this.tymerStart = null;
                 }
 
+                if(duration < 0.25) {
+                    console.log('Oopsies, you should probably do a little more work');
+                    return;
+                }
+
                 timeEntry.duration = duration;
 
                 this._handleTymerModalEntry(timeEntry);
