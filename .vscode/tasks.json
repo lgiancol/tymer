@@ -24,12 +24,14 @@
                 "group": "watchers",
                 "close": true
             },
-            // "problemMatcher": {
-            //     "background": {
-            //         "activeOnStart": true,
-            //         "endsPattern": "^.*All emulators ready! It is now safe to connect your app.$"
-            //     }
-            // }
+            "problemMatcher": {
+                "base": "$gulp-tsc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "== Starting firestore emulator [firestore]",
+                    "endsPattern": "All emulators ready! It is now safe to connect your app."
+                }
+            }
         },
         {
             "label": "start-server",
@@ -40,7 +42,15 @@
 			"presentation": {
 				"group": "watchers",
 				"close": true
-			}
+			},
+            "problemMatcher": {
+                "base": "$gulp-tsc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "tymer@0.0.0 start",
+                    "endsPattern": "Angular Live Development Server is listening on"
+                }
+            }
 		}
     ]
 }

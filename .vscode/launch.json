@@ -7,7 +7,7 @@
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "watch",
-      "url": "http://localhost:4200/"
+      "url": "http://localhost:4200/",
     }
   ]
 }
