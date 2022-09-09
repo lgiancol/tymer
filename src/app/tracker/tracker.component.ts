@@ -230,9 +230,19 @@ export class TrackerComponent implements OnInit, OnDestroy {
         const duration = this._durationToHours(durationInMs);
 
         this.tymerStart = null;
-        if(this._validDuration(duration)) {
+        if (this._validDuration(duration)) {
             this._openTymerModalAsync(duration);
         }
+    }
+
+    private _clampToQuarterDelta(duration: number) {
+        const minutesFromQuarter = (Math.round(duration / 1000 / 60) % 60) % 15; // < 7 we round down
+
+        // Clamp to the closest quarter
+        const multiplier = minutesFromQuarter >= 8 ? 1 : -1;
+        const delta = multiplier == -1 ? minutesFromQuarter : 15 - minutesFromQuarter;
+
+        return (delta * 60 * 1000) * multiplier;
     }
 
     private async _openTymerModalAsync(duration: number | null = null) {
@@ -246,12 +256,14 @@ export class TrackerComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe((timeEntry: TimeEntry) => {
             if (timeEntry) {
                 if (!duration) {
-                    const durationInMs = Date.now() - (+this.tymerStart!);
+                    let durationInMs = Date.now() - (+this.tymerStart!);
+                    durationInMs += this._clampToQuarterDelta(durationInMs)
+
                     duration = this._durationToHours(durationInMs);
                     this.tymerStart = null;
                 }
 
-                if(!this._validDuration(duration)) {
+                if (!this._validDuration(duration)) {
                     console.log('Oopsies, you should probably do a little more work');
                     return;
                 }
