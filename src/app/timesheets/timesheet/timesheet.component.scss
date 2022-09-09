@@ -1,5 +1,13 @@
 :host {
     table {
         width: 100%;
+
+        .mat-header-cell,
+        .mat-cell {
+            padding: 0 24px;
+        }
+        .cdk-column-date {
+            width: 200px;
+        }
     }
 }

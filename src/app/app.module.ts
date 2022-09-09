@@ -27,6 +27,7 @@ import { TymerPipe } from './pipes/tymer.pipe';
 import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { TimesheetsComponent } from './timesheets/timesheets/timesheets.component';
 import { TimesheetComponent } from './timesheets/timesheet/timesheet.component';
+import { RespectNewLinesPipe } from './pipes/respect-new-lines.pipe';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { TimesheetComponent } from './timesheets/timesheet/timesheet.component';
         DurationTimeEntryDialogComponent,
         TimesheetsComponent,
         TimesheetComponent,
+        RespectNewLinesPipe,
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),

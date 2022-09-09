@@ -34,10 +34,9 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.sub.add(TimeSheet.Collection(this.firestore).doc(this.route.snapshot.params['id']).valueChanges({ idfield: 'id' }).pipe(map(ts => TimeSheet.fromFirebase(ts))).subscribe(timeSheet => {
             this.timeSheet = timeSheet as TimeSheet;
+            console.log(this.timeSheet.entries);
             this.projectNames = _.chain(this.timeSheet.entries).map('project').uniq().value() as string[];
-            this.timeSheetEntries.filterPredicate = (entry: TimeEntry, filter: string) => {
-                return entry.project?.includes(filter) || false;
-            };
+            this.timeSheetEntries.filterPredicate = (entry: TimeEntry, filter: string) => entry.project?.includes(filter) || false;
             this.timeSheetEntries.data = _.sortBy(timeSheet?.entries as TimeEntry[], ['date']);
             this._parseExportedEntries(this.timeSheetEntries.filteredData);
         }));

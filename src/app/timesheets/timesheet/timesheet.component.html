@@ -19,21 +19,21 @@
             </ng-container>
     
             <ng-container matColumnDef="duration">
-                <th mat-header-cell *matHeaderCellDef class="weekend">Duration</th>
-                <td mat-cell *matCellDef="let entry" class="weekend">{{entry.duration}}h</td>
+                <th mat-header-cell *matHeaderCellDef class="">Duration</th>
+                <td mat-cell *matCellDef="let entry" class="p-2 text-center">{{entry.duration}}h</td>
             </ng-container>
     
             <ng-container matColumnDef="notes">
-                <th mat-header-cell *matHeaderCellDef>Notes</th>
-                <td mat-cell *matCellDef="let entry">
-                    {{entry.notes}}
+                <th mat-header-cell *matHeaderCellDef class="p-2">Notes</th>
+                <td mat-cell *matCellDef="let entry" class="p-2">
+                    <span [innerHtml]="entry.notes | respectNewLines"></span>
                 </td>
             </ng-container>
     
             <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Date</th>
-                <td mat-cell *matCellDef="let entry">
-                    {{entry.date | date:'medium'}}
+                <th mat-header-cell *matHeaderCellDef class="p-2">Date</th>
+                <td mat-cell *matCellDef="let entry" class="p-2">
+                    {{entry.date | date:'MM/dd/yy'}}
                 </td>
             </ng-container>
     

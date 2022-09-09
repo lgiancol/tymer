@@ -1,6 +1,7 @@
-import { AngularFirestore, DocumentData, QueryFn } from "@angular/fire/compat/firestore";
-import { BaseEntity } from "./BaseEntity";
+import { DocumentData } from "@angular/fire/compat/firestore";
 import { ITimeEntry } from "./ITimeEntry";
+
+import * as _ from 'lodash';
 
 export class TimeEntry implements ITimeEntry {
     constructor(

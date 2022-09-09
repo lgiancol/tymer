@@ -3,6 +3,8 @@ import { BaseEntity } from "./BaseEntity";
 import { ITimeSheet } from "./ITimeSheet";
 import { TimeEntry } from "./time-entry";
 
+import * as _ from 'lodash';
+
 export class TimeSheet extends BaseEntity implements ITimeSheet {
     constructor(
         public id: string | undefined,
@@ -18,6 +20,7 @@ export class TimeSheet extends BaseEntity implements ITimeSheet {
     }
 
     static fromFirebase(model: DocumentData | undefined) {
+        console.log(_.cloneDeep(model));
         if(!model) {
             return null;
         }
