@@ -25,6 +25,8 @@ import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.compon
 import { TrackerComponent } from './tracker/tracker.component';
 import { TymerPipe } from './pipes/tymer.pipe';
 import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
+import { TimesheetsComponent } from './timesheets/timesheets/timesheets.component';
+import { TimesheetComponent } from './timesheets/timesheet/timesheet.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-
         TrackerComponent,
         NotesDialogComponent,
         TymerPipe,
-        DurationTimeEntryDialogComponent
+        DurationTimeEntryDialogComponent,
+        TimesheetsComponent,
+        TimesheetComponent,
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),

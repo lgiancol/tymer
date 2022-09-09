@@ -221,12 +221,18 @@ export class TrackerComponent implements OnInit, OnDestroy {
         return hours; // Hours
     }
 
+    private _validDuration(duration: number) {
+        return duration >= 0.25;
+    }
+
     stopTymer() {
         const durationInMs = Date.now() - (+this.tymerStart!);
-        const durationInHours = this._durationToHours(durationInMs);
+        const duration = this._durationToHours(durationInMs);
 
         this.tymerStart = null;
-        this._openTymerModalAsync(durationInHours);
+        if(this._validDuration(duration)) {
+            this._openTymerModalAsync(duration);
+        }
     }
 
     private async _openTymerModalAsync(duration: number | null = null) {
@@ -245,7 +251,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
                     this.tymerStart = null;
                 }
 
-                if(duration < 0.25) {
+                if(!this._validDuration(duration)) {
                     console.log('Oopsies, you should probably do a little more work');
                     return;
                 }

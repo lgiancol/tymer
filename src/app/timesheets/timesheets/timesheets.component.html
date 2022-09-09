@@ -1,0 +1,10 @@
+<div>
+    <h2>Time Sheets</h2>
+    <mat-action-list>
+        <button class="h-auto" mat-list-item [routerLink]="timeSheet.id" *ngFor="let timeSheet of timeSheets">
+            <div class="p-4">
+                {{timeSheet.startDate | date:'MM/dd/yyyy'}} - {{timeSheet.endDate| date:'MM/dd/yyyy'}} [{{timeSheet.entries.length}}]
+            </div>
+        </button>
+    </mat-action-list>
+</div>
