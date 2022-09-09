@@ -20,7 +20,6 @@ export class TimeSheet extends BaseEntity implements ITimeSheet {
     }
 
     static fromFirebase(model: DocumentData | undefined) {
-        console.log(_.cloneDeep(model));
         if(!model) {
             return null;
         }
