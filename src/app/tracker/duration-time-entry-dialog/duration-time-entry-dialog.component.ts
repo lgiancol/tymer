@@ -24,7 +24,9 @@ export class DurationTimeEntryDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.entry = new TimeEntry(null, this.duration, '', new Date());
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        this.entry = new TimeEntry(null, this.duration, '', today);
         if(this.projects.length == 1) {
             this.entry.project = this.projects[0].name;
         }
