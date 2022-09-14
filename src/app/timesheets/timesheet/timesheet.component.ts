@@ -6,9 +6,9 @@ import { map, Subscription } from 'rxjs';
 import { TimeEntry } from 'src/app/model/time-entry';
 import { TimeSheet } from 'src/app/model/timesheet';
 
+import { MatDialog } from '@angular/material/dialog';
 import * as _ from 'lodash';
 import { ExportedTimeSheetDialogComponent } from 'src/app/dialogs/exported-time-sheet-dialog/exported-time-sheet-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'tymer-timesheet',
@@ -26,7 +26,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     columnNames = ['project', 'duration', 'notes', 'date'];
 
     exportedEntries!: TimeEntry[];
-    totalDuration = 0;
 
     constructor(
         private route: ActivatedRoute,
@@ -51,22 +50,21 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
     private _parseExportedEntries(entries: TimeEntry[]) {
         const entriesByDate = _.groupBy(entries, entry => entry.date.getTime());
-        this.totalDuration = 0;
 
-        this.exportedEntries = Object.entries(entriesByDate).map(entry => {
+        console.log(entriesByDate);
+
+        return Object.entries(entriesByDate).map(entry => {
             const date = entry[0];
             const totalDuration = entry[1].reduce((acc, value) => acc + value.duration, 0);
-
-            this.totalDuration += totalDuration;
 
             return new TimeEntry(null, totalDuration, '', new Date(Number(date)));
         });
     }
 
     exportTimeEntries() {
-
+        const timeSheet = new TimeSheet(undefined, this.timeSheet.startDate, this.timeSheet.endDate, this._parseExportedEntries(this.timeSheetEntries.filteredData));
         this.dialog.open(ExportedTimeSheetDialogComponent, {
-            data: { timeSheet: this.timeSheet }
+            data: { timeSheet: timeSheet }
         });
     }
 

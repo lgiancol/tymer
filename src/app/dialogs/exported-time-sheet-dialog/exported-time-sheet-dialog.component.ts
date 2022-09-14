@@ -31,7 +31,7 @@ export class ExportedTimeSheetDialogComponent {
 
             this.totalDuration += totalDateDuration;
 
-            return new TimeEntry(null, this.totalDuration, '', new Date(Number(date)));
+            return new TimeEntry(null, totalDateDuration, '', new Date(Number(date)));
         });
     }
 
