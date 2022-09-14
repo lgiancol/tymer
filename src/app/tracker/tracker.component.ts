@@ -194,7 +194,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
 
     async saveTimeSheet(displayableEntries: DisplayableEntry[]) {
-        const finalEntries: TimeEntry[] = _.chain(displayableEntries).map(de => de.getTimeEntries().filter(te => te.notes)).flatMap().map(entry => {
+        const finalEntries: TimeEntry[] = _.chain(displayableEntries).map(de => de.getTimeEntries().filter(te => te.duration > 0)).flatMap().map(entry => {
             entry.duration = TimeUtil.MillisToHours(TimeUtil.ClampToQuarter(TimeUtil.HoursToMillis(entry.duration)));
 
             return entry;
