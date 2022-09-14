@@ -8,6 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class NotesDialogComponent {
     notes?: string = '';
+    showMarkdown = false;
 
     constructor(
         public dialogRef: MatDialogRef<NotesDialogComponent>,

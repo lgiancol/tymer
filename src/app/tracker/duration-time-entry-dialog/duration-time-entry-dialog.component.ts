@@ -14,6 +14,7 @@ export class DurationTimeEntryDialogComponent implements OnInit {
     projects: Project[];
 
     entry!: TimeEntry;
+    showMarkdown = false;
 
     constructor(
         public dialogRef: MatDialogRef<DurationTimeEntryDialogComponent>,

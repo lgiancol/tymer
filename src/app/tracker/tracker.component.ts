@@ -227,6 +227,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
 
     private async _openTymerModalAsync(duration: number | null = null) {
         const dialogRef = this.dialog.open(DurationTimeEntryDialogComponent, {
+            width: '80%',
             data: {
                 duration: duration,
                 projects: this.projects

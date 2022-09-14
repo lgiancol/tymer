@@ -3,10 +3,10 @@
     <div mat-dialog-content>
         <mat-form-field appearance="standard">
             <mat-label>Duration</mat-label>
-            <input matInput [ngModel]="duration" disabled/>
+            <input matInput [ngModel]="duration" disabled />
         </mat-form-field>
-      </div>
-      <mat-form-field appearance="standard">
+    </div>
+    <mat-form-field appearance="standard">
         <mat-label>Project</mat-label>
         <mat-select [(ngModel)]="entry.project" placeholder="Project" [disabled]="projects.length == 1">
             <mat-option *ngFor="let project of projects" [value]="project.name">
@@ -14,13 +14,18 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="standard">
-        <mat-label>Notes</mat-label>
-        <textarea matInput [(ngModel)]="entry.notes" rows="10" cdkFocusInitial></textarea>
-    </mat-form-field>
-      <div mat-dialog-actions align="end">
+    <div>
+        <mat-form-field appearance="standard" *ngIf="!showMarkdown">
+            <mat-label>Notes</mat-label>
+            <textarea matInput [(ngModel)]="entry.notes" rows="10" cdkFocusInitial></textarea>
+        </mat-form-field>
+        <tymer-markdown-preview [text]="entry.notes" *ngIf="showMarkdown"></tymer-markdown-preview>
+        <button mat-raised-button (click)="showMarkdown = !showMarkdown">{{showMarkdown ? 'Edit' : 'Preview'}}</button>
+    </div>
+
+    <div mat-dialog-actions align="end">
         <span [matTooltip]="entry.project == null ? 'Make sure to select a project first' : ''">
             <button mat-button [mat-dialog-close]="entry" [disabled]="!entry.project">Create</button>
         </span>
-      </div>
+    </div>
 </div>

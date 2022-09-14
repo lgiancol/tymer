@@ -1,9 +1,13 @@
 <div>
     <h1 mat-dialog-title>Notes</h1>
     <div mat-dialog-content>
-        <mat-form-field appearance="standard">
-            <textarea matInput [(ngModel)]="notes" rows="10" cdkFocusInitial></textarea>
-        </mat-form-field>
+        <div class="pb-2">
+            <mat-form-field appearance="standard" *ngIf="!showMarkdown">
+                <textarea matInput [(ngModel)]="notes" rows="10" cdkFocusInitial></textarea>
+            </mat-form-field>
+            <tymer-markdown-preview [text]="notes" *ngIf="showMarkdown"></tymer-markdown-preview>
+            <button mat-raised-button (click)="showMarkdown = !showMarkdown">{{showMarkdown ? 'Edit' : 'Preview'}}</button>
+        </div>
       </div>
       <div mat-dialog-actions align="end">
         <button mat-button [mat-dialog-close]="notes">Ok</button>

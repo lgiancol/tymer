@@ -21,14 +21,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ExportedTimeSheetDialogComponent } from './dialogs/exported-time-sheet-dialog/exported-time-sheet-dialog.component';
+import { RespectNewLinesPipe } from './pipes/respect-new-lines.pipe';
+import { TymerPipe } from './pipes/tymer.pipe';
+import { TimesheetComponent } from './timesheets/timesheet/timesheet.component';
+import { TimesheetsComponent } from './timesheets/timesheets/timesheets.component';
+import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.component';
 import { TrackerComponent } from './tracker/tracker.component';
-import { TymerPipe } from './pipes/tymer.pipe';
-import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
-import { TimesheetsComponent } from './timesheets/timesheets/timesheets.component';
-import { TimesheetComponent } from './timesheets/timesheet/timesheet.component';
-import { RespectNewLinesPipe } from './pipes/respect-new-lines.pipe';
-import { ExportedTimeSheetDialogComponent } from './dialogs/exported-time-sheet-dialog/exported-time-sheet-dialog.component';
+import { MarkdownPreviewComponent } from './components/markdown/markdown-preview/markdown-preview.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { ExportedTimeSheetDialogComponent } from './dialogs/exported-time-sheet-
         TimesheetComponent,
         RespectNewLinesPipe,
         ExportedTimeSheetDialogComponent,
+        MarkdownPreviewComponent,
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),
@@ -64,7 +66,7 @@ import { ExportedTimeSheetDialogComponent } from './dialogs/exported-time-sheet-
         MatSidenavModule,
         MatTableModule,
         MatTooltipModule,
-        ReactiveFormsModule,
+        ReactiveFormsModule
     ],
     providers: [
         {
