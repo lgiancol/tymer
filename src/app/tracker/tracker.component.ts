@@ -11,6 +11,7 @@ import { IProject } from '../model/IProject';
 import { Project } from '../model/project';
 import { TimeEntry } from '../model/time-entry';
 import { TimeSheet } from '../model/timesheet';
+import { TimeUtil } from '../util/time-util';
 import { DurationTimeEntryDialogComponent } from './duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { NotesDialogComponent } from './notes-dialog/notes-dialog.component';
 
@@ -51,7 +52,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
 
     private _getTimeSheetRange() {
         const day = this.today.getDay();
-        const diff = this.today.getDate() - day + (day === 0 ? -6 : 0);
+        const diff = this.today.getDate();
 
         const startDate = new Date(this.today);
         startDate.setDate(diff);
@@ -196,14 +197,18 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
 
     async saveTimeSheet(displayableEntries: DisplayableEntry[]) {
-        const finalEntries: TimeEntry[] = _.flatMap(displayableEntries.map(de => de.getTimeEntries().filter(te => te.notes)));
+        const finalEntries: TimeEntry[] = _.chain(displayableEntries).map(de => de.getTimeEntries().filter(te => te.notes)).flatMap().map(entry => {
+            entry.duration = TimeUtil.MillisToHours(TimeUtil.ClampToQuarter(TimeUtil.HoursToMillis(entry.duration)));
+
+            return entry;
+        }).value();
         this.timeSheet.entries = finalEntries;
         await TimeSheet.Collection(this.db).doc(this.timeSheet.id).update(this.timeSheet.toFirebase());
     }
 
     getTotalHours(dayOfWeek: DayOfWeek) {
         let hours = this.timeEntriesDataSource.data.map(t => t[dayOfWeek] ? t[dayOfWeek].duration : 0).reduce((acc, value) => acc + value, 0);
-        return Math.round((hours + Number.EPSILON) * 100) / 100;
+        return TimeUtil.Round(hours); // Should already be rounded since we don't allow anything other than whole numbers and .25 but y'know
     }
 
     startTymer() {
@@ -213,36 +218,14 @@ export class TrackerComponent implements OnInit, OnDestroy {
         this._openTymerModalAsync(null); // null means the duration will be calculated when the modal is closed
     }
 
-    private _durationToHours(durationInMs: number) {
-        // Round to nearest minutes
-        let minutes = Math.round(durationInMs / 1000 / 60); // Minutes
-        let hours = Math.round(((minutes / 60) + Number.EPSILON) * 100) / 100; // Round to 2 decimal points
-
-        return hours; // Hours
-    }
-
-    private _validDuration(duration: number) {
-        return duration >= 0.25;
-    }
-
     stopTymer() {
-        const durationInMs = Date.now() - (+this.tymerStart!);
-        const duration = this._durationToHours(durationInMs);
+        const durationInMs = TimeUtil.DifferenceFromNow(+this.tymerStart!);
+        const duration = TimeUtil.MillisToHours(durationInMs);
 
-        this.tymerStart = null;
-        if (this._validDuration(duration)) {
+        if (duration > 0) {
             this._openTymerModalAsync(duration);
         }
-    }
-
-    private _clampToQuarterDelta(duration: number) {
-        const minutesFromQuarter = (Math.round(duration / 1000 / 60) % 60) % 15; // < 7 we round down
-
-        // Clamp to the closest quarter
-        const multiplier = minutesFromQuarter >= 8 ? 1 : -1;
-        const delta = multiplier == -1 ? minutesFromQuarter : 15 - minutesFromQuarter;
-
-        return (delta * 60 * 1000) * multiplier;
+        this.tymerStart = null;
     }
 
     private async _openTymerModalAsync(duration: number | null = null) {
@@ -256,14 +239,15 @@ export class TrackerComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe((timeEntry: TimeEntry) => {
             if (timeEntry) {
                 if (!duration) {
-                    let durationInMs = Date.now() - (+this.tymerStart!);
-                    durationInMs += this._clampToQuarterDelta(durationInMs)
+                    let durationInMs = TimeUtil.DifferenceFromNow(+this.tymerStart!);
+                    durationInMs = TimeUtil.ClampToQuarter(durationInMs);
 
-                    duration = this._durationToHours(durationInMs);
+                    duration = TimeUtil.MillisToHours(durationInMs);
+                    console.log(duration);
                     this.tymerStart = null;
                 }
 
-                if (!this._validDuration(duration)) {
+                if (duration == 0) {
                     console.log('Oopsies, you should probably do a little more work');
                     return;
                 }
