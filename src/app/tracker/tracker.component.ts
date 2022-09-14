@@ -51,11 +51,10 @@ export class TrackerComponent implements OnInit, OnDestroy {
     }
 
     private _getTimeSheetRange() {
-        const day = this.today.getDay();
-        const diff = this.today.getDate();
+        const sundayDate = this.today.getDate() - this.today.getDay();
 
         const startDate = new Date(this.today);
-        startDate.setDate(diff);
+        startDate.setDate(sundayDate);
         startDate.setHours(0, 0, 0, 0);
         const endDate = new Date();
         endDate.setDate(startDate.getDate() + 6);
@@ -158,8 +157,6 @@ export class TrackerComponent implements OnInit, OnDestroy {
             }
         });
 
-
-        // entries = _.orderBy(entries, ['project', 'date'], ['asc', 'desc']);
         return _.flatMap(currentProjectsDEs);
     }
 
