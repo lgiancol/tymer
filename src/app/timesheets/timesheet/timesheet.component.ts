@@ -7,6 +7,8 @@ import { TimeEntry } from 'src/app/model/time-entry';
 import { TimeSheet } from 'src/app/model/timesheet';
 
 import * as _ from 'lodash';
+import { ExportedTimeSheetDialogComponent } from 'src/app/dialogs/exported-time-sheet-dialog/exported-time-sheet-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'tymer-timesheet',
@@ -28,7 +30,8 @@ export class TimesheetComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private firestore: AngularFirestore
+        private firestore: AngularFirestore,
+        public dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
@@ -57,6 +60,13 @@ export class TimesheetComponent implements OnInit, OnDestroy {
             this.totalDuration += totalDuration;
 
             return new TimeEntry(null, totalDuration, '', new Date(Number(date)));
+        });
+    }
+
+    exportTimeEntries() {
+
+        this.dialog.open(ExportedTimeSheetDialogComponent, {
+            data: { timeSheet: this.timeSheet }
         });
     }
 

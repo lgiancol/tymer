@@ -1,0 +1,16 @@
+<div>
+    <h1 mat-dialog-title class="m-0">{{timeSheet.startDate | date:'MM/dd/yy'}} - {{timeSheet.endDate | date:'MM/dd/yy'}}</h1>
+    <div mat-dialog-content>
+        <br>
+        <div *ngFor="let entry of combinedTimeEntries">
+            <span>{{entry.date | date:'MM/dd/yy'}}: {{entry.duration}}h</span>
+        </div>
+        <br>
+        <span>Total: {{totalDuration}}h</span>
+    </div>
+    <div mat-dialog-actions align="end">
+        <span>
+            <button mat-button [mat-dialog-close]>Okay</button>
+        </span>
+    </div>
+</div>
