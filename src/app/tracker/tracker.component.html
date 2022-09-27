@@ -26,7 +26,7 @@
             <td mat-cell *matCellDef="let displayableTimeEntry" class="weekend" [ngClass]="{'today': today.getDay() == 0}">
                 <mat-form-field appearance="standard">
                     <mat-label>Duration</mat-label>
-                    <input matInput type="number" [(ngModel)]="displayableTimeEntry[0].duration">
+                    <input matInput type="number" step="any" [(ngModel)]="displayableTimeEntry[0].duration">
                     <button matSuffix mat-icon-button (click)="openNotesDialog(displayableTimeEntry[0])" matTooltip="Add notes">
                         <mat-icon>note_add</mat-icon>
                     </button>
@@ -40,7 +40,7 @@
             <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 1}">
                 <mat-form-field appearance="standard">
                     <mat-label>Duration</mat-label>
-                    <input matInput type="number" [(ngModel)]="displayableTimeEntry[1].duration">
+                    <input matInput type="number" step="any" [(ngModel)]="displayableTimeEntry[1].duration">
                     <button matSuffix mat-icon-button (click)="openNotesDialog(displayableTimeEntry[1])" matTooltip="Add notes">
                         <mat-icon>note_add</mat-icon>
                     </button>
@@ -54,7 +54,7 @@
             <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 2}">
                 <mat-form-field appearance="standard">
                     <mat-label>Duration</mat-label>
-                    <input matInput type="number" [(ngModel)]="displayableTimeEntry[2].duration">
+                    <input matInput type="number" step="any" [(ngModel)]="displayableTimeEntry[2].duration">
                     <button matSuffix mat-icon-button (click)="openNotesDialog(displayableTimeEntry[2])" matTooltip="Add notes">
                         <mat-icon>note_add</mat-icon>
                     </button>
@@ -68,7 +68,7 @@
             <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 3}">
                 <mat-form-field appearance="standard">
                     <mat-label>Duration</mat-label>
-                    <input matInput type="number" [(ngModel)]="displayableTimeEntry[3].duration">
+                    <input matInput type="number" step="any" [(ngModel)]="displayableTimeEntry[3].duration">
                     <button matSuffix mat-icon-button (click)="openNotesDialog(displayableTimeEntry[3])" matTooltip="Add notes">
                         <mat-icon>note_add</mat-icon>
                     </button>
@@ -82,7 +82,7 @@
             <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 4}">
                 <mat-form-field appearance="standard">
                     <mat-label>Duration</mat-label>
-                    <input matInput type="number" [(ngModel)]="displayableTimeEntry[4].duration">
+                    <input matInput type="number" step="any" [(ngModel)]="displayableTimeEntry[4].duration">
                     <button matSuffix mat-icon-button (click)="openNotesDialog(displayableTimeEntry[4])" matTooltip="Add notes">
                         <mat-icon>note_add</mat-icon>
                     </button>
@@ -96,7 +96,7 @@
             <td mat-cell *matCellDef="let displayableTimeEntry" [ngClass]="{'today': today.getDay() == 5}">
                 <mat-form-field appearance="standard">
                     <mat-label>Duration</mat-label>
-                    <input matInput type="number" [(ngModel)]="displayableTimeEntry[5].duration">
+                    <input matInput type="number" step="any" [(ngModel)]="displayableTimeEntry[5].duration">
                     <button matSuffix mat-icon-button (click)="openNotesDialog(displayableTimeEntry[5])" matTooltip="Add notes">
                         <mat-icon>note_add</mat-icon>
                     </button>
@@ -110,7 +110,7 @@
             <td mat-cell *matCellDef="let displayableTimeEntry" class="weekend" [ngClass]="{'today': today.getDay() == 6}">
                 <mat-form-field appearance="standard">
                     <mat-label>Duration</mat-label>
-                    <input matInput type="number" [(ngModel)]="displayableTimeEntry[6].duration">
+                    <input matInput type="number" step="any" [(ngModel)]="displayableTimeEntry[6].duration">
                     <button matSuffix mat-icon-button (click)="openNotesDialog(displayableTimeEntry[6])" matTooltip="Add notes">
                         <mat-icon>note_add</mat-icon>
                     </button>
