@@ -250,7 +250,6 @@ export class TrackerComponent implements OnInit, OnDestroy {
             if (timeEntry) {
                 if (!duration) {
                     let durationInMs = TimeUtil.DifferenceFromNow(+this.tymerStart!);
-                    durationInMs = 15 * 60 * 1000;
                     durationInMs = TimeUtil.ClampToQuarter(durationInMs);
 
                     duration = TimeUtil.MillisToHours(durationInMs);
