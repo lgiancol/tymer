@@ -19,16 +19,16 @@ export class TimesheetsComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        this.subs.add(TimeSheet.Collection(this.firebase).valueChanges({ idField: 'id' }).pipe(map(ts => ts.map(ts => TimeSheet.fromFirebase(ts)))).subscribe(timeSheets => {
+        this.subs.add(TimeSheet.Collection(this.firebase, (ref) => ref.where('isSubmitted', '==', true).orderBy('startDate', 'desc')).valueChanges({ idField: 'id' }).pipe(map(ts => ts.map(ts => TimeSheet.fromFirebase(ts)))).subscribe(timeSheets => {
             if (timeSheets != null) {
-                this._initTimeSheets(timeSheets as TimeSheet[]);
+                this.timeSheets = timeSheets as TimeSheet[];
             }
         }));
     }
 
-    private _initTimeSheets(timeSheets: TimeSheet[]) {
-        this.timeSheets = _.orderBy(timeSheets, 'startDate', 'desc');
-    }
+    // private _initTimeSheets(timeSheets: TimeSheet[]) {
+    //     this.timeSheets = _.orderBy(timeSheets, 'startDate', 'desc');
+    // }
 
     ngOnDestroy(): void {
         this.subs.unsubscribe();

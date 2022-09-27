@@ -2,7 +2,7 @@
     <h1>Tracker</h1>
 
     <div class="d-flex">
-        <button mat-raised-button color="primary" (click)="tymerStart == null ? startTymer() : stopTymer()">{{tymerStart == null ? 'Start' : 'Stop'}}</button>
+        <button mat-raised-button color="accent" (click)="tymerStart == null ? startTymer() : stopTymer()">{{tymerStart == null ? 'Start' : 'Stop'}}</button>
         <h2 class="ms-2">{{tymerStart | tymer}}</h2>
     </div>
 
@@ -124,5 +124,5 @@
         <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
         <tr mat-footer-row *matFooterRowDef="tableColumns"></tr>
     </table>
-    <button mat-raised-button color="warn" (click)="saveTimeSheet(timeEntriesDataSource.data)">Save</button>
+    <button mat-raised-button color="primary" (click)="submitTimeSheet()">Submit</button>
 </div>

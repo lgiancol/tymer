@@ -51,8 +51,6 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     private _parseExportedEntries(entries: TimeEntry[]) {
         const entriesByDate = _.groupBy(entries, entry => entry.date.getTime());
 
-        console.log(entriesByDate);
-
         return Object.entries(entriesByDate).map(entry => {
             const date = entry[0];
             const totalDuration = entry[1].reduce((acc, value) => acc + value.duration, 0);
@@ -62,7 +60,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     }
 
     exportTimeEntries() {
-        const timeSheet = new TimeSheet(undefined, this.timeSheet.startDate, this.timeSheet.endDate, this._parseExportedEntries(this.timeSheetEntries.filteredData));
+        const timeSheet = new TimeSheet(undefined, this.timeSheet.startDate, this.timeSheet.endDate, this._parseExportedEntries(this.timeSheetEntries.filteredData), false);
         this.dialog.open(ExportedTimeSheetDialogComponent, {
             data: { timeSheet: timeSheet }
         });

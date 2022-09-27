@@ -75,12 +75,13 @@ export class TrackerComponent implements OnInit, OnDestroy {
             this.projects = projects;
 
             // Get the timesheet for this week
-            this.subs.add(TimeSheet.Collection(this.db, (ref) => ref.where('startDate', '==', timeSheetRange[0]).where('endDate', '==', timeSheetRange[1])).valueChanges({ idField: 'id' })
+            // this.subs.add(TimeSheet.Collection(this.db, (ref) => ref.where('startDate', '==', timeSheetRange[0]).where('endDate', '==', timeSheetRange[1])).valueChanges({ idField: 'id' })
+            this.subs.add(TimeSheet.Collection(this.db, (ref) => ref.where('isSubmitted', '==', false)).valueChanges({ idField: 'id' })
                 .pipe(map(ts => ts[0]), map(ts => ts ? TimeSheet.fromFirebase(ts) : null))
                 .subscribe(async timeSheet => {
                     // Create the timeSheet for the week
                     if (!timeSheet) {
-                        const toAdd = new TimeSheet(undefined, timeSheetRange[0], timeSheetRange[1], []);
+                        const toAdd = new TimeSheet(undefined, timeSheetRange[0], timeSheetRange[1], [], false);
                         await TimeSheet.Collection(this.db).add(toAdd.toFirebase());
                         return;
                     }
@@ -187,20 +188,31 @@ export class TrackerComponent implements OnInit, OnDestroy {
         });
 
         dialogRef.afterClosed().subscribe(notes => {
-            if (notes) {
+            if (notes && notes != timeEntry.notes) {
                 timeEntry.notes = notes;
+
+                this.parseAndSaveTimeSheet(this.timeEntriesDataSource.data);
             }
         });
     }
 
-    async saveTimeSheet(displayableEntries: DisplayableEntry[]) {
+    async parseAndSaveTimeSheet(displayableEntries: DisplayableEntry[]) {
         const finalEntries: TimeEntry[] = _.chain(displayableEntries).map(de => de.getTimeEntries().filter(te => te.duration > 0)).flatMap().map(entry => {
             entry.duration = TimeUtil.MillisToHours(TimeUtil.ClampToQuarter(TimeUtil.HoursToMillis(entry.duration)));
 
             return entry;
         }).value();
         this.timeSheet.entries = finalEntries;
-        await TimeSheet.Collection(this.db).doc(this.timeSheet.id).update(this.timeSheet.toFirebase());
+        await this.saveTimeSheet(this.timeSheet);
+    }
+
+    async submitTimeSheet() {
+        this.timeSheet.isSubmitted = true;
+        await this.parseAndSaveTimeSheet(this.timeEntriesDataSource.data);
+    }
+
+    async saveTimeSheet(toSave: TimeSheet) {
+        await TimeSheet.Collection(this.db).doc(toSave.id).update(toSave.toFirebase());
     }
 
     getTotalHours(dayOfWeek: DayOfWeek) {
@@ -238,10 +250,10 @@ export class TrackerComponent implements OnInit, OnDestroy {
             if (timeEntry) {
                 if (!duration) {
                     let durationInMs = TimeUtil.DifferenceFromNow(+this.tymerStart!);
+                    durationInMs = 15 * 60 * 1000;
                     durationInMs = TimeUtil.ClampToQuarter(durationInMs);
 
                     duration = TimeUtil.MillisToHours(durationInMs);
-                    console.log(duration);
                     this.tymerStart = null;
                 }
 
@@ -268,7 +280,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
             const de = this._addNewDisplayableEntries(this.timeEntriesDataSource.data, this.timeSheet.entries);
             this._attempAddTimeEntryToDisplayableEntry(entry, de);
         }
-        this.saveTimeSheet(this.timeEntriesDataSource.data);
+        this.parseAndSaveTimeSheet(this.timeEntriesDataSource.data);
     }
 
     ngOnDestroy(): void {

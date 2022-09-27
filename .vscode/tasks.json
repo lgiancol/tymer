@@ -22,7 +22,7 @@
             "group": "build",
             "presentation": {
                 "group": "watchers",
-                "close": true
+                "close": false
             },
             "problemMatcher": {
                 "base": "$gulp-tsc",
@@ -41,7 +41,7 @@
 			"group": "build",
 			"presentation": {
 				"group": "watchers",
-				"close": true
+				"close": false
 			},
             "problemMatcher": {
                 "base": "$gulp-tsc",

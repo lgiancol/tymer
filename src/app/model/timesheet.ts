@@ -10,7 +10,8 @@ export class TimeSheet extends BaseEntity implements ITimeSheet {
         public id: string | undefined,
         public startDate: Date,
         public endDate: Date,
-        public entries: TimeEntry[]
+        public entries: TimeEntry[],
+        public isSubmitted: boolean
     ) {
         super();
     }
@@ -28,14 +29,21 @@ export class TimeSheet extends BaseEntity implements ITimeSheet {
         let endDate = new Date();
         endDate.setTime(model['endDate']['seconds'] * 1000); // Multiple by 1000 since we need milliseconds, not seconds
         let timeEntryModels = model['entries'] as any[];
-        return new TimeSheet(model['id'], startDate, endDate, timeEntryModels.map(timeEntryModel => TimeEntry.fromFirebase(timeEntryModel)).filter(te => te != null) as TimeEntry[]);
+        return new TimeSheet(
+            model['id'],
+            startDate,
+            endDate,
+            timeEntryModels.map(timeEntryModel => TimeEntry.fromFirebase(timeEntryModel)).filter(te => te != null) as TimeEntry[],
+            model['isSubmitted']
+        );
     }
 
     toFirebase() {
         return {
             startDate: this.startDate,
             endDate: this.endDate,
-            entries: this.entries.map(te => te.toFirebase())
+            entries: this.entries.map(te => te.toFirebase()),
+            isSubmitted: this.isSubmitted
         };
     }
 }
