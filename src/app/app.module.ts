@@ -30,6 +30,7 @@ import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-
 import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.component';
 import { TrackerComponent } from './tracker/tracker.component';
 import { MarkdownPreviewComponent } from './components/markdown/markdown-preview/markdown-preview.component';
+import { TotalHoursPipe } from './pipes/total-hours.pipe';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { MarkdownPreviewComponent } from './components/markdown/markdown-preview
         RespectNewLinesPipe,
         ExportedTimeSheetDialogComponent,
         MarkdownPreviewComponent,
+        TotalHoursPipe,
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),
