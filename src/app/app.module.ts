@@ -20,17 +20,18 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MarkdownPreviewComponent } from './components/markdown/markdown-preview/markdown-preview.component';
 import { ExportedTimeSheetDialogComponent } from './dialogs/exported-time-sheet-dialog/exported-time-sheet-dialog.component';
 import { RespectNewLinesPipe } from './pipes/respect-new-lines.pipe';
+import { TotalHoursPipe } from './pipes/total-hours.pipe';
 import { TymerPipe } from './pipes/tymer.pipe';
 import { TimesheetComponent } from './timesheets/timesheet/timesheet.component';
 import { TimesheetsComponent } from './timesheets/timesheets/timesheets.component';
 import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.component';
 import { TrackerComponent } from './tracker/tracker.component';
-import { MarkdownPreviewComponent } from './components/markdown/markdown-preview/markdown-preview.component';
-import { TotalHoursPipe } from './pipes/total-hours.pipe';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import { TotalHoursPipe } from './pipes/total-hours.pipe';
         MatSelectModule,
         MatSidenavModule,
         MatTableModule,
+        MatToolbarModule,
         MatTooltipModule,
         ReactiveFormsModule
     ],

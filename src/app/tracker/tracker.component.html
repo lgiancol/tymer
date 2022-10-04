@@ -124,8 +124,8 @@
         <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
         <tr mat-footer-row *matFooterRowDef="tableColumns"></tr>
     </table>
-    <div class="d-flex justify-content-between">
-        <button mat-raised-button color="primary" (click)="submitTimeSheet()">Submit</button>
+    <div>
+        <button mat-raised-button color="warn" (click)="submitTimeSheet()">Submit</button>
         <button mat-raised-button color="primary" (click)="parseAndSaveTimeSheet(timeEntriesDataSource.data);">Save</button>
     </div>
 </div>

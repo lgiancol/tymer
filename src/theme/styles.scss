@@ -1,0 +1,17 @@
+@use "@angular/material" as mat;
+
+@use "tymerTheme";
+
+@include mat.core();
+
+@include mat.core-theme(tymerTheme.$my-app-light-theme);
+@include mat.all-component-themes(tymerTheme.$my-app-light-theme);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
