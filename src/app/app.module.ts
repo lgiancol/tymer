@@ -32,6 +32,7 @@ import { TimesheetsComponent } from './timesheets/timesheets/timesheets.componen
 import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.component';
 import { TrackerComponent } from './tracker/tracker.component';
+import { FixerComponent } from './fixer/fixer.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { TrackerComponent } from './tracker/tracker.component';
         ExportedTimeSheetDialogComponent,
         MarkdownPreviewComponent,
         TotalHoursPipe,
+        FixerComponent,
     ],
     imports: [
         AngularFireModule.initializeApp(environment.firebase),

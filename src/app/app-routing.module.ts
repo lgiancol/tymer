@@ -4,6 +4,7 @@ import { ProjectComponent } from './project/project.component';
 import { TimesheetComponent } from './timesheets/timesheet/timesheet.component';
 import { TimesheetsComponent } from './timesheets/timesheets/timesheets.component';
 import { TrackerComponent } from './tracker/tracker.component';
+import { FixerComponent } from './fixer/fixer.component';
 
 const routes: Routes = [
     {
@@ -27,6 +28,7 @@ const routes: Routes = [
         path: 'projects',
         children: [
             {
+                
                 path: '',
                 component: ProjectComponent,
             },
@@ -35,6 +37,10 @@ const routes: Routes = [
                 component: TrackerComponent
             }
         ]
+    },
+    {
+        path: 'fixer',
+        component: FixerComponent
     },
     {
         path: '**',
