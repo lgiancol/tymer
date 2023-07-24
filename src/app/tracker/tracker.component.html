@@ -1,5 +1,10 @@
 <div>
-    <h1>Tracker</h1>
+    <div class="d-flex align-items-center">
+        <h1>Tracker ({{timeSheet?.startDate | date:'MM/dd/yyyy'}} - {{timeSheet?.endDate | date:'MM/dd/yyyy'}})</h1>
+        <ng-container *ngIf="timeSheet?.id">
+            <button mat-icon-button [cdkCopyToClipboard]="timeSheet!.id!"><mat-icon>content_copy</mat-icon></button>
+        </ng-container>
+    </div>
 
     <div class="d-flex">
         <button mat-raised-button color="accent" (click)="tymerStart == null ? startTymer() : stopTymer()">{{tymerStart == null ? 'Start' : 'Stop'}}</button>

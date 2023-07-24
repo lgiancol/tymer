@@ -7,8 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProjectComponent } from './project/project.component';
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFirestoreModule, USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/compat/firestore';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -23,6 +24,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarkdownPreviewComponent } from './components/markdown/markdown-preview/markdown-preview.component';
+import { DebugPageComponent } from './debug-page/debug-page.component';
 import { ExportedTimeSheetDialogComponent } from './dialogs/exported-time-sheet-dialog/exported-time-sheet-dialog.component';
 import { RespectNewLinesPipe } from './pipes/respect-new-lines.pipe';
 import { TotalHoursPipe } from './pipes/total-hours.pipe';
@@ -32,7 +34,7 @@ import { TimesheetsComponent } from './timesheets/timesheets/timesheets.componen
 import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.component';
 import { TrackerComponent } from './tracker/tracker.component';
-import { DebugPageComponent } from './debug-page/debug-page.component';
+
 
 
 @NgModule({
@@ -59,6 +61,7 @@ import { DebugPageComponent } from './debug-page/debug-page.component';
         AppRoutingModule,
         BrowserAnimationsModule,
         BrowserModule,
+        ClipboardModule,
         FormsModule,
         MatButtonModule,
         MatDatepickerModule,

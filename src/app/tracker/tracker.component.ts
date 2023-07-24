@@ -27,7 +27,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
     tymerStart: Date | null = null;
 
     projects!: IProject[];
-    timeSheet!: TimeSheet;
+    timeSheet?: TimeSheet;
 
     timeEntriesDataSource = new MatTableDataSource<DisplayableEntry>();
     tableColumns = ['project', 'sun', 'mon', 'tue', 'wed', 'thur', 'fri', 'sat'];
@@ -37,7 +37,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
     // Only show the dates for the current timeSheet
     datePickerFilter = (d: Date | null): boolean => {
         const dateTime = d?.getTime()!;
-        return dateTime >= this.timeSheet?.startDate.getTime() && dateTime <= this.timeSheet?.endDate.getTime();
+        return dateTime >= this.timeSheet!.startDate.getTime() && dateTime <= this.timeSheet!.endDate.getTime();
     }
 
     constructor(
@@ -86,6 +86,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
                         return;
                     }
                     this.timeSheet = timeSheet;
+                    console.log(this.timeSheet);
 
                     let entries = timeSheet.entries;
                     // Add a blank entry for a new entry in the UI
@@ -101,8 +102,8 @@ export class TrackerComponent implements OnInit, OnDestroy {
                     des.forEach(de => {
                         for (const dayOfWeek of [0, 1, 2, 3, 4, 5, 6] as DayOfWeek[]) {
                             if (!de[dayOfWeek]) {
-                                const date = new Date(this.timeSheet.startDate);
-                                const entry = new TimeEntry(de.project, 0, '', new Date(date.setDate(this.timeSheet.startDate.getDate() + dayOfWeek)));
+                                const date = new Date(this.timeSheet!.startDate);
+                                const entry = new TimeEntry(de.project, 0, '', new Date(date.setDate(this.timeSheet!.startDate.getDate() + dayOfWeek)));
                                 entries.push(entry);
                                 de[dayOfWeek] = entry;
                             }
@@ -121,8 +122,8 @@ export class TrackerComponent implements OnInit, OnDestroy {
         const displayableEntry = new DisplayableEntry();
         displayableEntry.project = null;
         for (const dayOfWeek of [0, 1, 2, 3, 4, 5, 6] as DayOfWeek[]) {
-            const date = new Date(this.timeSheet.startDate);
-            const entry = new TimeEntry(null, 0, '', new Date(date.setDate(this.timeSheet.startDate.getDate() + dayOfWeek)));
+            const date = new Date(this.timeSheet!.startDate);
+            const entry = new TimeEntry(null, 0, '', new Date(date.setDate(this.timeSheet!.startDate.getDate() + dayOfWeek)));
             entries.push(entry);
             displayableEntry[dayOfWeek] = entry;
         }
@@ -202,12 +203,12 @@ export class TrackerComponent implements OnInit, OnDestroy {
 
             return entry;
         }).value();
-        this.timeSheet.entries = finalEntries;
-        await this.saveTimeSheet(this.timeSheet);
+        this.timeSheet!.entries = finalEntries;
+        await this.saveTimeSheet(this.timeSheet!);
     }
 
     async submitTimeSheet() {
-        this.timeSheet.isSubmitted = true;
+        this.timeSheet!.isSubmitted = true;
         await this.parseAndSaveTimeSheet(this.timeEntriesDataSource.data);
     }
 
@@ -276,7 +277,7 @@ export class TrackerComponent implements OnInit, OnDestroy {
             }
         }
         if (!didAdd) {
-            const de = this._addNewDisplayableEntries(this.timeEntriesDataSource.data, this.timeSheet.entries);
+            const de = this._addNewDisplayableEntries(this.timeEntriesDataSource.data, this.timeSheet!.entries);
             this._attempAddTimeEntryToDisplayableEntry(entry, de);
         }
         this.parseAndSaveTimeSheet(this.timeEntriesDataSource.data);
