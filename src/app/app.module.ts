@@ -32,11 +32,13 @@ import { TimesheetsComponent } from './timesheets/timesheets/timesheets.componen
 import { DurationTimeEntryDialogComponent } from './tracker/duration-time-entry-dialog/duration-time-entry-dialog.component';
 import { NotesDialogComponent } from './tracker/notes-dialog/notes-dialog.component';
 import { TrackerComponent } from './tracker/tracker.component';
+import { DebugPageComponent } from './debug-page/debug-page.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
+        DebugPageComponent,
         ProjectComponent,
         TrackerComponent,
         NotesDialogComponent,
@@ -73,9 +75,9 @@ import { TrackerComponent } from './tracker/tracker.component';
         ReactiveFormsModule
     ],
     providers: [
-        {
-            provide: USE_FIRESTORE_EMULATOR, useValue: !environment.production ? ['localhost', 8080] : undefined
-        }
+        // {
+        //     provide: USE_FIRESTORE_EMULATOR, useValue: !environment.production ? ['localhost', 8080] : undefined
+        // }
     ],
     bootstrap: [AppComponent]
 })
